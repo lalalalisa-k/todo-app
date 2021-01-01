@@ -7,7 +7,9 @@ let add = document.getElementById('add-button');
 add.addEventListener('click', () => {
 
   const todo = todoItem.value;
-  if (!todoItem.value){
+
+  if (!todoItem.value)
+  {
     alert("入力して下さい");
   } else
   {
@@ -15,6 +17,7 @@ add.addEventListener('click', () => {
     var tr = document.createElement('tr');
     var th = document.createElement('th');
     var td = document.createElement('td');
+
     th.textContent = (todoItems.length);
     tr.appendChild(th);
     td.textContent = todoItem.value;
