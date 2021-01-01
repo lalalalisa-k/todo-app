@@ -24,17 +24,10 @@ add.addEventListener('click', () => {
 
     let todolist = document.getElementById('todo-list');
     todoItems.push(todo);
-    const list = document.createElement('li');
-    list.textContent = (todoItems.length) + 'td' + todoItem.value;
-    document.getElementById('todo-list').appendChild(list);
-  
-
-
-  
 
     const progressButton = document.createElement('button');
     progressButton.innerText = '作業中';
-    document.getElementById('todo-list').appendChild(progressButton);
+    tr.appendChild(progressButton);
 
     progressButton.addEventListener('click', () => {
       if (progressButton.innerText = '作業中')
@@ -48,18 +41,14 @@ add.addEventListener('click', () => {
 
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
-    document.getElementById('todo-list').appendChild(removeButton);
-
+    tr.appendChild(removeButton);
     removeButton.addEventListener('click', () => {
-      document.getElementById('todo-list').removeChild(list);
-      document.getElementById('todo-list').removeChild(progressButton);
-      document.getElementById('todo-list').removeChild(removeButton);
+      document.getElementById('wrapper').removeChild(table);
+      tr.removeChild(progressButton);
+      tr.removeChild(removeButton);
     });
-    
-    console.log(todoItems.length);
-    console.log(todoItems);
-    console.log(todo);
-
+    const reset = document.getElementById("input-todo-box");
+    reset.value = '';
   }
 
 
