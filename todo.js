@@ -1,37 +1,66 @@
 'use strict';
 
-let todoItems = [];
-let todoItem = document.getElementById("input-todo-box");
-let add = document.getElementById('add-button');
+const todoItems = [];
+const todoItem = document.getElementById("input-todo-box");
+const addButton = document.getElementById('add-button');
+const table = document.createElement('table');
+const tr = document.createElement('tr');
+const td = document.createElement('td');
 
-add.addEventListener('click', () => {
+const addTask = () => {
+  addButton.addEventListener('click', () => {
+    const todo = todoItem.value;
+    if (todo)
+    {
+      todoItems.push(todo);
+      document.getElementById('wrapper').appendChild(table);
+      const reset = document.getElementById("input-todo-box");
+      reset.value = '';
+      showTask();
+    } else
+    {
+      alert("入力して下さい");
+    }
+  }
+    , false);
+}
 
-  const todo = todoItem.value;
+const showTask = () => {
 
-  if (!todoItem.value)
+  const tr = document.createElement('tr');
+  const td = document.createElement('td');
+  const td2 = document.createElement('td');
+
+  let newRow = table.insertRow();
+  let newCell = newRow.insertCell();
+  let newText = document.createTextNode(todoItems.length);
+  newCell.appendChild(newText);
+
+  newCell = newRow.insertCell();
+  newText = document.createTextNode(todoItems);
+  newCell.appendChild(newText);
+
+  
+
+
+
+  for (let i = 0; i < todoItems.length; i++)
   {
-    alert("入力して下さい");
-  } else
-  {
-    var table = document.createElement('table');
-    var tr = document.createElement('tr');
-    var th = document.createElement('th');
-    var td = document.createElement('td');
+    //table.appendChild(tr);
+    //tr.appendChild(td);
+    //td.textContent = todoItems.length + " "+todoItems[i];
 
-    th.textContent = (todoItems.length);
-    tr.appendChild(th);
-    td.textContent = todoItem.value;
-    tr.appendChild(td);
-    table.appendChild(tr);
-    document.getElementById('wrapper').appendChild(table);
-
-    let todolist = document.getElementById('todo-list');
-    todoItems.push(todo);
-
+  }
+  
+  const createProgressButton = () => {
     const progressButton = document.createElement('button');
     progressButton.innerText = '作業中';
-    tr.appendChild(progressButton);
-
+  
+    //newCell2 = newRow.insertCell();
+    //newCell2.appendChild(progressButton); ////
+    //td.appendChild(progressButton) //
+    newCell.appendChild(progressButton);
+  
     progressButton.addEventListener('click', () => {
       if (progressButton.innerText = '作業中')
       {
@@ -41,19 +70,33 @@ add.addEventListener('click', () => {
         progressButton.innerText = '作業中';
       }
     });
+  }
+
+  const createRemoveButton = () => {
 
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
-    tr.appendChild(removeButton);
-    removeButton.addEventListener('click', () => {
-      document.getElementById('wrapper').removeChild(table);
-      tr.removeChild(progressButton);
-      tr.removeChild(removeButton);
-    });
-    const reset = document.getElementById("input-todo-box");
-    reset.value = '';
+  
+    //td.appendChild(tr);
+    //td.appendChild(removeButton);
+
+    newCell.appendChild(removeButton);
+  
+      removeButton.addEventListener('click', () => {
+        document.getElementById('wrapper').removeChild(table);
+        tr.removeChild(progressButton);
+        tr.removeChild(removeButton);
+      });
   }
 
+  createProgressButton();
+  createRemoveButton();
 
 }
-, false);
+
+
+
+
+
+addTask();
+
