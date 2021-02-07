@@ -36,10 +36,6 @@ const showTask = () => {
   let newText = document.createTextNode(todoItems.length);
   newCell.appendChild(newText);
 
-  newCell = newRow.insertCell();
-  newText = document.createTextNode(todoItems);
-  newCell.appendChild(newText);
-
   
 
 
@@ -49,7 +45,11 @@ const showTask = () => {
     //table.appendChild(tr);
     //tr.appendChild(td);
     //td.textContent = todoItems.length + " "+todoItems[i];
-
+    
+  
+    //newCell = newRow.insertCell();
+    newText = document.createTextNode(todoItems[i]);
+    newCell.appendChild(newText);
   }
   
   const createProgressButton = () => {
@@ -76,22 +76,21 @@ const showTask = () => {
 
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
-  
+
     //td.appendChild(tr);
     //td.appendChild(removeButton);
 
     newCell.appendChild(removeButton);
-  
+
       removeButton.addEventListener('click', () => {
         document.getElementById('wrapper').removeChild(table);
-        tr.removeChild(progressButton);
-        tr.removeChild(removeButton);
+        td.removeChild(progressButton);
+        td.removeChild(removeButton);
       });
   }
 
   createProgressButton();
   createRemoveButton();
-
 }
 
 
