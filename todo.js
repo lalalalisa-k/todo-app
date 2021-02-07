@@ -29,38 +29,19 @@ const showTask = () => {
 
   const tr = document.createElement('tr');
   const td = document.createElement('td');
-  const td2 = document.createElement('td');
-
-  let newRow = table.insertRow();
-  let newCell = newRow.insertCell();
-  let newText = document.createTextNode(todoItems.length);
-  newCell.appendChild(newText);
-
-  
-
-
 
   for (let i = 0; i < todoItems.length; i++)
   {
-    //table.appendChild(tr);
-    //tr.appendChild(td);
-    //td.textContent = todoItems.length + " "+todoItems[i];
-    
-  
-    //newCell = newRow.insertCell();
-    newText = document.createTextNode(todoItems[i]);
-    newCell.appendChild(newText);
+    table.appendChild(tr);
+    tr.appendChild(td);
+    td.textContent = todoItems.length + " "+todoItems[i];
   }
-  
+
   const createProgressButton = () => {
     const progressButton = document.createElement('button');
     progressButton.innerText = '作業中';
-  
-    //newCell2 = newRow.insertCell();
-    //newCell2.appendChild(progressButton); ////
-    //td.appendChild(progressButton) //
-    newCell.appendChild(progressButton);
-  
+    td.appendChild(progressButton);
+
     progressButton.addEventListener('click', () => {
       if (progressButton.innerText = '作業中')
       {
@@ -73,22 +54,15 @@ const showTask = () => {
   }
 
   const createRemoveButton = () => {
-
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
-
-    //td.appendChild(tr);
-    //td.appendChild(removeButton);
-
-    newCell.appendChild(removeButton);
+    td.appendChild(removeButton);
 
       removeButton.addEventListener('click', () => {
-        document.getElementById('wrapper').removeChild(table);
-        td.removeChild(progressButton);
         td.removeChild(removeButton);
+        tr.removeChild(td);
       });
   }
-
   createProgressButton();
   createRemoveButton();
 }
