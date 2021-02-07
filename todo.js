@@ -1,33 +1,46 @@
 'use strict';
 
-let todoItems = [];
-let todoItem = document.getElementById("input-todo-box");
-let add = document.getElementById('add-button');
+const todoItems = [];
+const todoItem = document.getElementById("input-todo-box");
+const addButton = document.getElementById('add-button');
+const table = document.createElement('table');
+const tr = document.createElement('tr');
+const td = document.createElement('td');
 
-add.addEventListener('click', () => {
+const addTask = () => {
+  addButton.addEventListener('click', () => {
+    const todo = todoItem.value;
+    if (todo)
+    {
+      todoItems.push(todo);
+      document.getElementById('wrapper').appendChild(table);
+      const reset = document.getElementById("input-todo-box");
+      reset.value = '';
+      showTask();
+    } else
+    {
+      alert("入力して下さい");
+    }
+  }
+    , false);
+}
 
-  const todo = todoItem.value;
-  if (!todoItem.value){
-    alert("入力して下さい");
-  } else
+const showTask = () => {
+
+  const tr = document.createElement('tr');
+  const td = document.createElement('td');
+
+  for (let i = 0; i < todoItems.length; i++)
   {
-    var table = document.createElement('table');
-    var tr = document.createElement('tr');
-    var th = document.createElement('th');
-    var td = document.createElement('td');
-    th.textContent = (todoItems.length);
-    tr.appendChild(th);
-    td.textContent = todoItem.value;
-    tr.appendChild(td);
     table.appendChild(tr);
-    document.getElementById('wrapper').appendChild(table);
+    tr.appendChild(td);
+    td.textContent = todoItems.length + " "+todoItems[i];
+  }
 
-    let todolist = document.getElementById('todo-list');
-    todoItems.push(todo);
-
+  const createProgressButton = () => {
     const progressButton = document.createElement('button');
     progressButton.innerText = '作業中';
-    tr.appendChild(progressButton);
+    td.appendChild(progressButton);
 
     progressButton.addEventListener('click', () => {
       if (progressButton.innerText = '作業中')
@@ -38,19 +51,25 @@ add.addEventListener('click', () => {
         progressButton.innerText = '作業中';
       }
     });
-
-    const removeButton = document.createElement('button');
-    removeButton.innerText = '削除';
-    tr.appendChild(removeButton);
-    removeButton.addEventListener('click', () => {
-      document.getElementById('wrapper').removeChild(table);
-      tr.removeChild(progressButton);
-      tr.removeChild(removeButton);
-    });
-    const reset = document.getElementById("input-todo-box");
-    reset.value = '';
   }
 
+  const createRemoveButton = () => {
+    const removeButton = document.createElement('button');
+    removeButton.innerText = '削除';
+    td.appendChild(removeButton);
 
+      removeButton.addEventListener('click', () => {
+        td.removeChild(removeButton);
+        tr.removeChild(td);
+      });
+  }
+  createProgressButton();
+  createRemoveButton();
 }
-, false);
+
+
+
+
+
+addTask();
+
