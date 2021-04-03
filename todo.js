@@ -5,30 +5,24 @@
   const addButton = document.getElementById('add-button');
   const table = document.createElement('table');
   const tr = document.createElement('tr');
+  const th = document.createElement('th');
   const td = document.createElement('td');
   let todo = todoItem.value;
 
-  /* ここでtodosを宣言するとエラーになります。
   const todos = {
-        id: todoItems.length, task: todoItem.value, status: '作業中'
-      }　*/
+    //id: todoItems.length, task: todoItem.value, status: '作業中'
+  }
+
 
   const addTask = () => {
     addButton.addEventListener('click', () => {
       let todo = todoItem.value;
-      //const todos = {
-      //  id: todoItems.length, task: todoItem.value, status: '作業中'
-      //}
-
       if (todo)
       {
-        todoItems.push(todo);
-        /* 連想配列「todos」の
-        「id」にIDとして　格納したい
-          todos.id = todoItems.length; //
-          todos.task = todoItem.value; //
-          todos.status = '作業中';      //
-        */
+        todoItems.push(todos);
+        todos.id = todoItems.length;
+        todos.task = todoItem.value;
+        todos.status = '作業中';
 
         document.getElementById('wrapper').appendChild(table);
         const reset = document.getElementById("input-todo-box");
@@ -41,59 +35,75 @@
     });
   }
 
+  const createProgressButton = () => {
+    const progressButton = document.createElement('button');
+    progressButton.innerText = '作業中';
+    table.appendChild(tr);
+    //tr.appendChild(th);
+    //th.appendChild(td);
+    td.appendChild(progressButton);
+
+    progressButton.addEventListener('click', () => {
+      if (progressButton.innerText === '作業中')
+      {
+        progressButton.innerText = '完了';
+        todos.status = "done"; //プロパティ追加
+      } else
+      {
+        progressButton.innerText = '作業中';
+        todos.status = "progress" //プロパティ追加
+      }
+    });
+  }
+
+  const createRemoveButton = (id) => {
+
+    const removeButton = document.createElement('button');
+    removeButton.innerText = '削除';
+    table.appendChild(tr);
+    tr.appendChild(th);
+    th.appendChild(td);
+    td.appendChild(removeButton);
+
+    removeButton.addEventListener('click', () => {
+
+      td.removeChild(removeButton);
+      tr.removeChild(td);
+      //td.removeChild(table);
+
+      const todoId = todoItems.findIndex(todos => {
+        return todos.id === id;
+      });
+      todoItems.splice(todoId, 1);
+      todoItems.forEach((value, index) => {
+        todoItems[index].id = index;
+      });
+    });
+  }
+
   const showTask = () => {
 
     const tr = document.createElement('tr');
-    const td = document.createElement('td');
+    const th = document.createElement('th');
+    //const td = document.createElement('td');
 
-    for (let i = 0; i < todoItems.length; i++)
+    //tr.appendChild(th);
+    //tr.appendChild(td);
+    //th.appendChild(td);
+
+    for (let i = 0; i < todoItems.length ; i++)
     {
       table.appendChild(tr);
-      tr.appendChild(td);
-      td.textContent = todoItems.length + " " + todoItems[i] + " " + todoItems.task;
-      //td.textContent = todo[id] + " " + todo[task];
-
-    }
-    console.log(todo);
-
-    const createProgressButton = () => {
-      const progressButton = document.createElement('button');
-      progressButton.innerText = '作業中';
-      td.appendChild(progressButton);
-
-      progressButton.addEventListener('click', () => {
-        if (progressButton.innerText === '作業中')
-        {
-          progressButton.innerText = '完了';
-          //todo.status = "done"; //プロパティ追加
-        } else
-        {
-          progressButton.innerText = '作業中';
-          //todo.status = "progress" //プロパティ追加
-        }
-      });
-    }
-
-    const removeTodo = () => {
+      tr.appendChild(th);
+      //th.appendChild(td);
+      th.textContent = todos['id'] + " " + todos['task'] + " " + todos['status'];
 
     }
 
-    const createRemoveButton = () => {
-      const removeButton = document.createElement('button');
-      removeButton.innerText = '削除';
-      td.appendChild(removeButton);
-
-      removeButton.addEventListener('click', () => {
-
-        td.removeChild(removeButton);
-        tr.removeChild(td);
-
-        //removeTodo();
-      });
-    }
+    //tr.appendChild(td);
+    //tr.appendChild(th);
     createProgressButton();
     createRemoveButton();
-
   }
 
   const radioButtonAll = document.getElementById('radio-all');
@@ -109,7 +119,6 @@
       {
         flag = true;
         console.log("all");
-        alert("aaaa");
 
         return showTask();
 
@@ -123,6 +132,7 @@
     }
 
   }
+
   radioFilter();
   addTask();
 
