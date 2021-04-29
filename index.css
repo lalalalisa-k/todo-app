@@ -4,3 +4,7 @@
 .list{
   display:block;
 }
+
+.none {
+  display: none;
+}
