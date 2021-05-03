@@ -65,9 +65,9 @@
     })
 
   const WorkingTodo = () => {
-    const doingTodos = todoItems.filter(todo => todo.status === '作業中')
+    const workingTodos = todoItems.filter(todo => todo.status === '作業中')
     table.innerText = '';
-    doingTodos.forEach(todo => {
+    workingTodos.forEach(todo => {
       const row = table.insertRow(-1);
       const id = row.insertCell(0);
       const content = row.insertCell(1);
