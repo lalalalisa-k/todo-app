@@ -6,7 +6,6 @@
   const addButton = document.getElementById('add-button');
   const table = document.getElementById('table');
 
-  const radioForm = document.getElementById("radio-form");
   const radioButtonAll = document.getElementById("radio-all");
   const radioButtonWorking = document.getElementById("radio-working");
   const radioButtonDone = document.getElementById("radio-done");
@@ -70,11 +69,6 @@
     table.innerText = '';
     doingTodos.forEach(todo => {
       const row = table.insertRow(-1);
-      row.classList.add('tasks');
-      if (todo.status === '完了') {
-        row.classList.add('finish');
-      }
-
       const id = row.insertCell(0);
       const content = row.insertCell(1);
       const status = row.insertCell(2);
@@ -94,17 +88,10 @@
   const DoneTodo = () => {
     const element = '完了';
     const todoId = todoItems.indexOf(element);
-//    todoId = todoItems.indexOf(element, todoId + 1);
     const doneTodos = todoItems.filter(todo => todo.status === '完了');
     table.innerText = '';
     doneTodos.forEach(todo => {
       const row = table.insertRow(-1);
-      row.classList.add('tasks');
-      if (todo.status === '完了')
-      {
-        row.classList.add('finish');
-      }
-
       const id = row.insertCell(0);
       const content = row.insertCell(1);
       const status = row.insertCell(2);
