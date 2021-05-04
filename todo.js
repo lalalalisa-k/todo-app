@@ -35,7 +35,13 @@
 
       const index = row.rowIndex - 1;
       todoItems.splice(index, 1);
-      showTasks();
+      if (radioButtonDone.checked)
+    {
+      DoneTodo();
+      } else
+      {
+        showTasks();
+    }
     });
   }
 
