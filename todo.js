@@ -38,9 +38,8 @@
       if (radioButtonDone.checked)
     {
       DoneTodo();
-      } else
-      {
-        showTasks();
+    } else{
+      showTasks();
     }
     });
   }
