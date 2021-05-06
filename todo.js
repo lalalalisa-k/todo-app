@@ -15,26 +15,52 @@
     progressButton.innerText = todo.status;
     status.appendChild(progressButton);
     progressButton.addEventListener('click', () => {
+
       if (progressButton.innerText === '作業中') {
         todo.status = '完了';
         progressButton.innerText = todo.status;
         row.classList.add('finish');
+
+        if (radioButtonWorking.checked)
+        {
+          WorkingTodo();
+        }else if(radioButtonDone.checked)
+        {
+          DoneTodo();
+        }
         return;
+      } else
+      {
+        todo.status = '作業中';
+        progressButton.innerText = todo.status;
+        row.classList.remove('finish');
+        if (radioButtonWorking.checked)
+        {
+          WorkingTodo();
+        }else if(radioButtonDone.checked)
+        {
+          DoneTodo();
+        }
       }
-      todo.status = '作業中';
-      progressButton.innerText = todo.status;
-      row.classList.remove('finish');
     });
   }
 
-  const createRemoveButton = (remove, row) => {
+  const createRemoveButton = (remove, row, id) => {
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
     remove.appendChild(removeButton);
     removeButton.addEventListener('click', () => {
 
+      const todoIndex = todoItems.findIndex(todo => {
+        return todo.id === id;
+      });
+
       const index = row.rowIndex - 1;
       todoItems.splice(index, 1);
+      todoItems.forEach((value, index) => {
+        todoItems[index].id = index;
+      });
+
       if (radioButtonDone.checked)
     {
       DoneTodo();
@@ -47,7 +73,8 @@
   const showTasks = () => {
     table.innerText = '';
     todoItems.forEach(todo => {
-      const todoId = table.rows.length;
+      //const todoId = table.rows.length;
+      const todoId = todo.id;
       const row = table.insertRow(-1);
       row.classList.add('tasks');
       if (todo.status === '完了') {
@@ -79,8 +106,7 @@
       const status = row.insertCell(2);
       const remove = row.insertCell(3);
 
-      const element = '作業中';
-      const todoId = todoItems.indexOf(element);
+      const todoId = todo.id;
       id.innerText = todoId;
       content.innerText = todo.task;
 
@@ -91,8 +117,6 @@
   }
 
   const DoneTodo = () => {
-    const element = '完了';
-    const todoId = todoItems.indexOf(element);
     const doneTodos = todoItems.filter(todo => todo.status === '完了');
     table.innerText = '';
     doneTodos.forEach(todo => {
@@ -102,7 +126,7 @@
       const status = row.insertCell(2);
       const remove = row.insertCell(3);
 
-      //todoId = todoItems.indexOf(element, todoId + 1);
+      const todoId = todo.id;
       id.innerText = todoId;
       content.innerText = todo.task;
 
@@ -115,7 +139,7 @@
   radioButtonDone.addEventListener('click', DoneTodo);
 
   addButton.addEventListener('click', () => {
-    const todo = { task: todoItem.value, status: '作業中' };
+    const todo = { id: todoItems.length, task: todoItem.value, status: '作業中' };
     todoItems.push(todo);
 
     if (radioButtonAll.checked)
