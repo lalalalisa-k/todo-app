@@ -45,29 +45,33 @@
     });
   }
 
-  const createRemoveButton = (remove, row, id) => {
+  const createRemoveButton = (remove, row,) => {
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
     remove.appendChild(removeButton);
     removeButton.addEventListener('click', () => {
 
-      const todoIndex = todoItems.findIndex(todo => {
-        return todo.id === id;
-      });
-
       const index = row.rowIndex - 1;
       todoItems.splice(index, 1);
-      todoItems.forEach((value, index) => {
-        todoItems[index].id = index;
-      });
+
+      for (let i = 0; i < todoItems.length; i++)
+      {
+        todoItems[i].id = i;
+      }
 
       if (radioButtonDone.checked)
-    {
-      DoneTodo();
-    } else{
-      showTasks();
-    }
-    });
+      {
+        DoneTodo();
+      } else if (radioButtonWorking.checked)
+      {
+        WorkingTodo();
+      } else
+      {
+        showTasks();
+      }
+
+      console.log(index)
+;    });
   }
 
   const showTasks = () => {
@@ -91,6 +95,7 @@
       createProgressButton(todo, status, row);
       createRemoveButton(remove, row);
     });
+    console.log(todoItems);
   }
     radioButtonAll.addEventListener('click', () => {
       showTasks();
@@ -114,6 +119,7 @@
       createRemoveButton(remove, row);
     }
     )
+    console.log(todoItems);
   }
 
   const DoneTodo = () => {
@@ -133,6 +139,7 @@
       createProgressButton(todo, status, row);
       createRemoveButton(remove, row);
     });
+    console.log(todoItems);
   }
 
   radioButtonWorking.addEventListener('click', WorkingTodo);
