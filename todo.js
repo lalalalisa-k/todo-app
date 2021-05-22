@@ -45,14 +45,20 @@
     });
   }
 
-  const createRemoveButton = (remove, row,) => {
+  const createRemoveButton = (remove, row,id,) => {
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
     remove.appendChild(removeButton);
     removeButton.addEventListener('click', () => {
 
-      const index = row.rowIndex - 1;
-      todoItems.splice(index, 1);
+      const targetIndex = todoItems.findIndex(todo => {
+        　　　return todo.id === id;
+      });
+      // const targetIndex = Object.keys(todoItems).filter( (id) => {
+      //   　　　return todoItems[id] === id
+      //   　　});
+
+      todoItems.splice(targetIndex, 1);
 
       for (let i = 0; i < todoItems.length; i++)
       {
@@ -70,14 +76,13 @@
         showTasks();
       }
 
-      console.log(index)
-;    });
+      console.log(targetIndex);
+   });
   }
 
   const showTasks = () => {
     table.innerText = '';
     todoItems.forEach(todo => {
-      //const todoId = table.rows.length;
       const todoId = todo.id;
       const row = table.insertRow(-1);
       row.classList.add('tasks');
