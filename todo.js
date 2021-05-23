@@ -1,75 +1,161 @@
 'use strict';
 
-const todoItems = [];
-const todoItem = document.getElementById("input-todo-box");
-const addButton = document.getElementById('add-button');
-const table = document.createElement('table');
-const tr = document.createElement('tr');
-const td = document.createElement('td');
+{
+  const todoItems = [];
+  const todoItem = document.getElementById('input-todo-box');
+  const addButton = document.getElementById('add-button');
+  const table = document.getElementById('table');
 
-const addTask = () => {
-  addButton.addEventListener('click', () => {
-    const todo = todoItem.value;
-    if (todo)
-    {
-      todoItems.push(todo);
-      document.getElementById('wrapper').appendChild(table);
-      const reset = document.getElementById("input-todo-box");
-      reset.value = '';
-      showTask();
-    } else
-    {
-      alert("入力して下さい");
-    }
-  }
-    , false);
-}
+  const radioButtonAll = document.getElementById("radio-all");
+  const radioButtonWorking = document.getElementById("radio-working");
+  const radioButtonDone = document.getElementById("radio-done");
 
-const showTask = () => {
-
-  const tr = document.createElement('tr');
-  const td = document.createElement('td');
-
-  for (let i = 0; i < todoItems.length; i++)
-  {
-    table.appendChild(tr);
-    tr.appendChild(td);
-    td.textContent = todoItems.length + " "+todoItems[i];
-  }
-
-  const createProgressButton = () => {
+  const createProgressButton = (todo, status, row) => {
     const progressButton = document.createElement('button');
-    progressButton.innerText = '作業中';
-    td.appendChild(progressButton);
-
+    progressButton.innerText = todo.status;
+    status.appendChild(progressButton);
     progressButton.addEventListener('click', () => {
-      if (progressButton.innerText = '作業中')
-      {
-        progressButton.innerText = '完了';
+
+      if (progressButton.innerText === '作業中') {
+        todo.status = '完了';
+        progressButton.innerText = todo.status;
+        row.classList.add('finish');
+
+        if (radioButtonWorking.checked)
+        {
+          workingTodo();
+        }else if(radioButtonDone.checked)
+        {
+          doneTodo();
+        }
+        return;
       } else
       {
-        progressButton.innerText = '作業中';
+        todo.status = '作業中';
+        progressButton.innerText = todo.status;
+        row.classList.remove('finish');
+        if (radioButtonWorking.checked)
+        {
+          workingTodo();
+        }else if(radioButtonDone.checked)
+        {
+          doneTodo();
+        }
       }
     });
   }
 
-  const createRemoveButton = () => {
+  const createRemoveButton = (remove, todo) => {
     const removeButton = document.createElement('button');
     removeButton.innerText = '削除';
-    td.appendChild(removeButton);
+    remove.appendChild(removeButton);
+    removeButton.addEventListener('click', () => {
 
-      removeButton.addEventListener('click', () => {
-        td.removeChild(removeButton);
-        tr.removeChild(td);
-      });
+      todoItems.splice(todo.id, 1);
+
+      for (let i = 0; i < todoItems.length; i++)
+      {
+        todoItems[i].id = i;
+      }
+
+      if (radioButtonDone.checked)
+      {
+        doneTodo();
+      } else if (radioButtonWorking.checked)
+      {
+        workingTodo();
+      } else
+      {
+        showTasks();
+      }
+   });
   }
-  createProgressButton();
-  createRemoveButton();
+
+  const showTasks = () => {
+    table.innerText = '';
+    todoItems.forEach(todo => {
+      const todoId = todo.id;
+      const row = table.insertRow(-1);
+      row.classList.add('tasks');
+      if (todo.status === '完了') {
+        row.classList.add('finish');
+      }
+      const id = row.insertCell(0);
+      const content = row.insertCell(1);
+      const status = row.insertCell(2);
+      const remove = row.insertCell(3);
+
+      id.innerText = todoId;
+      content.innerText = todo.task;
+
+      createProgressButton(todo, status, row);
+      createRemoveButton(remove, row);
+    });
+  }
+    radioButtonAll.addEventListener('click', () => {
+      showTasks();
+    })
+
+  const workingTodo = () => {
+    const workingTodos = todoItems.filter(todo => todo.status === '作業中')
+    table.innerText = '';
+    workingTodos.forEach(todo => {
+      const row = table.insertRow(-1);
+      const id = row.insertCell(0);
+      const content = row.insertCell(1);
+      const status = row.insertCell(2);
+      const remove = row.insertCell(3);
+
+      const todoId = todo.id;
+      id.innerText = todoId;
+      content.innerText = todo.task;
+
+      createProgressButton(todo, status, row);
+      createRemoveButton(remove, todo)
+    }
+    )
+  }
+
+  
+  const doneTodo = () => {
+    const doneTodos = todoItems.filter(todo => todo.status === '完了');
+    table.innerText = '';
+    doneTodos.forEach(todo => {
+      const row = table.insertRow(-1);
+      const id = row.insertCell(0);
+      const content = row.insertCell(1);
+      const status = row.insertCell(2);
+      const remove = row.insertCell(3);
+
+      const todoId = todo.id;
+      id.innerText = todoId;
+      content.innerText = todo.task;
+
+      createProgressButton(todo, status, row);
+      createRemoveButton(remove, todo)
+    });
+  }
+
+  radioButtonWorking.addEventListener('click', workingTodo);
+  radioButtonDone.addEventListener('click', doneTodo);
+
+  addButton.addEventListener('click', () => {
+    const todo = { id: todoItems.length, task: todoItem.value, status: '作業中' };
+    todoItems.push(todo);
+
+    if (radioButtonAll.checked)
+    {
+      showTasks();
+    } else if (radioButtonWorking.checked)
+    {
+      workingTodo();
+    } else if (radioButtonDone.checked)
+    {
+      doneTodo();
+    } else
+    {
+      showTasks();
+    }
+    todoItem.value = '';
+  });
 }
-
-
-
-
-
-addTask();
-
