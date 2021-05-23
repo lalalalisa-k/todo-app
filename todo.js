@@ -23,10 +23,10 @@
 
         if (radioButtonWorking.checked)
         {
-          WorkingTodo();
+          workingTodo();
         }else if(radioButtonDone.checked)
         {
-          DoneTodo();
+          doneTodo();
         }
         return;
       } else
@@ -36,10 +36,10 @@
         row.classList.remove('finish');
         if (radioButtonWorking.checked)
         {
-          WorkingTodo();
+          workingTodo();
         }else if(radioButtonDone.checked)
         {
-          DoneTodo();
+          doneTodo();
         }
       }
     });
@@ -60,10 +60,10 @@
 
       if (radioButtonDone.checked)
       {
-        DoneTodo();
+        doneTodo();
       } else if (radioButtonWorking.checked)
       {
-        WorkingTodo();
+        workingTodo();
       } else
       {
         showTasks();
@@ -96,7 +96,7 @@
       showTasks();
     })
 
-  const WorkingTodo = () => {
+  const workingTodo = () => {
     const workingTodos = todoItems.filter(todo => todo.status === '作業中')
     table.innerText = '';
     workingTodos.forEach(todo => {
@@ -116,7 +116,8 @@
     )
   }
 
-  const DoneTodo = () => {
+  
+  const doneTodo = () => {
     const doneTodos = todoItems.filter(todo => todo.status === '完了');
     table.innerText = '';
     doneTodos.forEach(todo => {
@@ -135,8 +136,8 @@
     });
   }
 
-  radioButtonWorking.addEventListener('click', WorkingTodo);
-  radioButtonDone.addEventListener('click', DoneTodo);
+  radioButtonWorking.addEventListener('click', workingTodo);
+  radioButtonDone.addEventListener('click', doneTodo);
 
   addButton.addEventListener('click', () => {
     const todo = { id: todoItems.length, task: todoItem.value, status: '作業中' };
@@ -147,10 +148,10 @@
       showTasks();
     } else if (radioButtonWorking.checked)
     {
-      WorkingTodo();
+      workingTodo();
     } else if (radioButtonDone.checked)
     {
-      DoneTodo();
+      doneTodo();
     } else
     {
       showTasks();
